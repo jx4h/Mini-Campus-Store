@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Campus Mini Store</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* Header and navigation */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background-color: #081f5c;
+      color: white;
+      position: relative;
+    }
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: white;
+      text-decoration: none;
+    }
+    .navigation {
+      display: flex;
+      align-items: center;
+    }
+    .navigation a {
+      margin: 0 15px;
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    /* Hero section */
+    .hero {
+      background: url("{{ url_for('static', filename='hero.jpg') }}") no-repeat center center/cover;
+      color: #7096d1;
+      text-align: center;
+      padding: 140px 20px;
+    }
+    .hero h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+    .hero p {
+      font-size: 22px;
+      margin-bottom: 30px;
+    }
+    .btn {
+      background-color: #081f5c;
+      color: rgb(214, 242, 248);
+      padding: 12px 28px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    .btn:hover {
+      background-color: #031c42;
+      transform: scale(1.05);
+    }
+
+    /* Features */
+    .features {
+      display: flex;
+      justify-content: space-around;
+      padding: 30px 50px;
+      background-color: #edf1f6;
+      text-align: center;
+      flex-wrap: wrap;
+    }
+    .feature {
+      max-width: 300px;
+      margin: 20px;
+    }
+    .feature img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 15px;
+    }
+
+    /* Call-to-action */
+    .call-to-action {
+      text-align: center;
+      padding: 30px 30px;
+      background-color: #d0e3ff;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #7096d1;
+      color: #d0e3ff;
+      padding: 10px;
+      text-align: center;
+    }
+
+    /* User dropdown */
+    .user-menu {
+      position: relative;
+      display: inline-block;
+      margin-left: 20px;
+    }
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    .user-dropdown {
+      display: none;
+      position: absolute;
+      right: 0;
+      background-color: #fff;
+      min-width: 200px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      border-radius: 8px;
+      padding: 10px;
+      z-index: 1000;
+    }
+    .user-dropdown.show {
+      display: block;
+    }
+    .user-header {
+      text-align: center;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #ccc;
+    }
+    .user-header img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin-bottom: 5px;
+    }
+    .user-dropdown ul {
+      list-style: none;
+      padding: 0;
+      margin: 10px 0 0 0;
+    }
+    .user-dropdown ul li {
+      padding: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+    .user-dropdown ul li i {
+      margin-right: 10px;
+    }
+    .user-dropdown ul li a {
+      color: inherit;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <a href="{{ url_for('home') }}" class="logo">
+        <img src="{{ url_for('static', filename='logo.jpeg') }}" alt="Campus Logo" style="height:60px;">
+    </a>
+    <nav class="navigation">
+      <a href="{{ url_for('home') }}">Home</a>
+      {% if 'user_id' in session %}
+        <a href="{{ url_for('product') }}">Products</a>
+        <a href="{{ url_for('post') }}">Post Item</a>
+        <a href="{{ url_for('logout') }}">Logout ({{ session.get('email') }})</a>
+      {% else %}
+        <a href="{{ url_for('login') }}">Login</a>
+        <a href="{{ url_for('register') }}">Register</a>
+      {% endif %}
+    </nav>
+
+    {% if 'user_id' in session %}
+    <div class="user-menu">
+      <img src="{{ url_for('static', filename='img/user.png') }}" class="user-avatar" id="userToggle">
+      <div class="user-dropdown" id="userDropdown">
+        <div class="user-header">
+          <img src="{{ url_for('static', filename='img/user.png') }}" alt="User">
+          <h4>{{ session.get('email') }}</h4>
+        </div>
+        <ul>
+          <li><i class="fas fa-user"></i> <a href="{{ url_for('profile') }}">Profile</a></li>
+          <li><i class="fas fa-cog"></i> Settings & Privacy</li>
+          <li><i class="fas fa-question-circle"></i> Help & Support</li>
+          <li><i class="fas fa-adjust"></i> Display & Accessibility</li>
+          <li><i class="fas fa-sign-out-alt"></i> <a href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+    {% endif %}
+  </header>
+
+  <!-- Hero section -->
+  <section class="hero">
+    <h1>Welcome to Campus Mini Store</h1>
+    <p>Your one-stop shop for student deals, gadgets, and essentials.</p>
+    {% if 'user_id' in session %}
+      <a href="{{ url_for('product') }}" class="btn">Browse Products</a>
+    {% else %}
+      <a href="{{ url_for('login') }}" class="btn">Login to Browse Products</a>
+    {% endif %}
+  </section>
+
+  <!-- Features section -->
+  <section class="features">
+    <div class="feature">
+      <img src="{{ url_for('static', filename='D3957F36-777F-44EF-97C6-3120AA565606.jpeg') }}" alt="Affordable Deals">
+      <h2>Affordable Deals</h2>
+      <p>Budget-friendly items perfect for campus life.</p>
+    </div>
+    <div class="feature">
+      <img src="{{ url_for('static', filename='D3957F36-777F-44EF-97C6-3120AA565606 2.jpeg') }}" alt="Fast Transactions">
+      <h2>Fast Transactions</h2>
+      <p>Quick listings and purchases between students.</p>
+    </div>
+    <div class="feature">
+      <img src="{{ url_for('static', filename='D3957F36-777F-44EF-97C6-3120AA565606 3.jpeg') }}" alt="Community Driven">
+      <h2>Community Driven</h2>
+      <p>All items are posted by fellow students — trust your network.</p>
+    </div>
+  </section>
+
+  <!-- Call-to-action -->
+  <section class="call-to-action">
+    <h2>Have something to sell?</h2>
+    <p>Post your items and connect with buyers across campus instantly.</p>
+    {% if 'user_id' in session %}
+      <a href="{{ url_for('post') }}" class="btn">Post an Item</a>
+    {% else %}
+      <a href="{{ url_for('login') }}" class="btn">Login to Post</a>
+    {% endif %}
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>©️ 2025 Campus Mini Store. Built for students, by students.</p>
+  </footer>
+
+  <!-- User dropdown JS -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const toggle = document.getElementById("userToggle");
+      const dropdown = document.getElementById("userDropdown");
+
+      toggle?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        dropdown.classList.toggle("show");
+      });
+
+      document.addEventListener("click", () => {
+        dropdown?.classList.remove("show");
+      });
+    });
+  </script>
+</body>
+</html>

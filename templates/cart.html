@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Your Cart</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='cart.css') }}">
+</head>
+<body>
+
+<h1>Your Cart</h1>
+
+{% if items and items|length > 0 %}
+  {% for item in items %}
+  <div class="cart-item" data-id="{{ item['id'] }}">
+    <strong>{{ item['name'] }}</strong>
+    <p>EGP {{ item['price'] }}</p>
+  
+    <button class="minus">−</button>
+    <span>{{ item['quantity'] }}</span>
+    <button class="plus">+</button>
+  
+    <button class="remove">❌</button>
+  </div>
+  
+  <script>
+  document.querySelectorAll(".cart-item").forEach(div => {
+    const id = div.dataset.id;
+    div.querySelector(".minus").onclick = () => updateQty(id, -1);
+    div.querySelector(".plus").onclick = () => updateQty(id, 1);
+    div.querySelector(".remove").onclick = () => removeItem(id);
+  });
+  </script>
+  <p><strong>Subtotal:</strong> EGP {{ subtotal }}</p>
+
+{% else %}
+  <p>Your cart is empty 🛒</p>
+{% endif %}
+
+<script>
+function changeQty(btn, delta) {
+  const itemDiv = btn.closest(".cart-item");
+  const id = itemDiv.dataset.id;
+  let qty = parseInt(itemDiv.dataset.qty) + delta;
+
+  if (qty < 1) qty = 0;
+
+  fetch("/cart/update", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      product_id: id,
+      quantity: qty
+    })
+  }).then(() => location.reload());
+}
+
+function removeItem(id) {
+  fetch("/cart/remove/" + id, {
+    method: "POST"
+  }).then(() => location.reload());
+}
+</script>
+
+</body>
+</html>

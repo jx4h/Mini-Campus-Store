@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='signup.css') }}">
+</head>
+<body>
+
+  <header>
+    <a href="{{ url_for('home') }}" class="logo">
+        <img src="{{ url_for('static', filename='logo.jpeg') }}" alt="Campus Logo" style="height:50px;">
+    </a>
+    <nav class="navigation">
+      <a href="{{ url_for('home') }}">Home</a>
+      <a href="{{ url_for('product') }}">Product</a>
+      <a href="{{ url_for('post') }}">Post Item</a>
+    </nav>
+  </header>
+
+  <section class="signup" id="signup">
+    <div class="wrapper">
+
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <ul class="flashes">
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+
+      <form action="{{ url_for('register') }}" method="POST">
+        <h1>SIGN UP</h1>
+
+        <!-- Username -->
+        <div class="input-box">
+          <input type="text" name="name" placeholder="Username" required>
+          <i class='bx bxs-user'></i>
+        </div>
+
+        <!-- Email -->
+        <div class="input-box">
+          <input type="email" name="email" placeholder="Email" required>
+        </div>
+
+        <!-- Password -->
+        <div class="input-box">
+          <input type="password" name="password" placeholder="Password" required>
+          <i class='bx bxs-lock-alt'></i>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn">Sign Up</button>
+
+        <!-- Login Redirect -->
+        <div class="login-link">
+          <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+</body>
+</html>

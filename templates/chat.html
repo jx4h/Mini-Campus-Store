@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Chat</title>
+<style>
+body { font-family: Arial; background:#f0f2f5 }
+.chat { max-width:400px; margin:40px auto; background:#fff; border-radius:12px; padding:10px }
+.msg { padding:10px 14px; border-radius:18px; margin:8px; max-width:70% }
+.user { background:#dcf8c6; margin-left:auto }
+.bot { background:#eee }
+form { display:flex; gap:10px }
+input { flex:1; padding:10px; border-radius:20px; border:1px solid #ccc }
+button { border:none; background:#0084ff; color:white; padding:10px 16px; border-radius:20px }
+</style>
+</head>
+<body>
+
+<div class="chat">
+  {% for m in messages %}
+    <div class="msg {{ m.from }}">{{ m.text }}</div>
+  {% endfor %}
+
+  <form method="POST">
+    <input name="message" placeholder="Type a message..." required>
+    <button>Send</button>
+  </form>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout</title>
+<script src="https://js.stripe.com/v3/"></script>
+<script src="{{ url_for('static', filename='js/payment.js') }}"></script>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #D9E1F1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 50px 20px;
+}
+
+.checkout-container {
+    background: #8FB3E2;
+    padding: 30px;
+    border-radius: 10px;
+    width: 400px;
+    box-shadow: 0 4px 15px #000000;
+}
+
+h2 {
+    text-align: center;
+    color: #081f44;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #d2ebff;
+    font-size: 16px;
+}
+
+#card-element {
+    padding: 12px;
+    border: 1px solid #d2ebff;
+    border-radius: 6px;
+    background-color: #d2ebff;
+}
+
+#pay-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #081f44;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+#pay-btn:hover {
+    background-color: #42587a;
+}
+
+#payment-message {
+    margin-top: 15px;
+    font-weight: bold;
+    text-align: center;
+    color: green;
+}
+
+.total {
+    text-align: right;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+</style>
+</head>
+<body>
+
+<div class="checkout-container">
+    <h2>Checkout</h2>
+
+    <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" placeholder="USER NAME" required>
+    </div>
+
+    <div class="form-group">
+        <label for="email">Email (optional)</label>
+        <input type="email" id="email" placeholder="user@example.com">
+    </div>
+
+    <div class="form-group">
+        <label>Card Details</label>
+        <div id="card-element"></div>
+    </div>
+
+    <div class="total">Total: EGP <span id="total-amount">0.00</span></div>
+
+    <button id="pay-btn">Pay Now</button>
+
+    <p id="payment-message"></p>
+</div>
+
+
+<script src="{{url_for('static',filename='js/cart.js')}}"></script>
+
+</body>
+</html>
